@@ -236,6 +236,21 @@ mob/proc/Unconscious(mob/P,var/text)
 				src.VaizardHealth+=clamp(passive_handler.Get("Tenacity")* glob.TENACITY_VAI_MULT, glob.TENACITY_VAI_MIN, glob.TENACITY_VAI_MAX) //actual clutch now.
 				src.HealthAnnounce10+=1
 				return
+	if(src.passive_handler.Get("Giji"))
+		if(src.HealthAnnounce10<=1+RedTenacity&&FightingSeriously(P,src))
+			if(prob((src.passive_handler.Get("Giji")*glob.TENACITY_GETUP_CHANCE)+5))
+				src.KO=0
+				src.OMessage(15, "...but [src] refuses to go down, erupting with desperate power!", "<font color=red>[src]([src.key]) remains standing despite impossible odds!")
+				if(src.passive_handler.Get("Color of Courage"))
+					src.Health+=5
+				else
+					src.Health=5
+				src.VaizardHealth+=clamp(passive_handler.Get("Giji")* glob.TENACITY_VAI_MULT, glob.TENACITY_VAI_MIN, glob.TENACITY_VAI_MAX)
+				src.HealthAnnounce10+=1
+				if(!src.CheckSlotless("False Super Saiyan"))
+					var/obj/Skills/Buffs/SlotlessBuffs/False_Super_Saiyan/fss = new(src)
+					fss.Trigger(src)
+				return
 	if(src.passive_handler.Get("The Echo"))
 		if(src.HealthAnnounce10<=2+RedTenacity&&FightingSeriously(P,src))
 			src.KO=0
